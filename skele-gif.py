@@ -6,7 +6,9 @@ from skimage.util import invert
 from skimage import io
 from skimage.color import rgb2gray
 import tkinter as tk
+import sys
 
+arguments = sys.argv
 frames = []
 skeleframes = []
 
@@ -38,7 +40,8 @@ def convert_new_to_tk_image(image):
     return ImageTk.PhotoImage(image)
 
 
-gif_file = './gifs-pics/zingus-cat.gif'
+# gif_file = './gifs-pics/horserun.gif'
+gif_file = './gifs-pics/' + arguments[1] + '.gif'
 gif_to_array(gif_file)
 
 for f in frames:
@@ -63,10 +66,10 @@ def show_images():
     root.title("Skeleton Project")
 
     original_label = tk.Label(root)
-    original_label.grid(row=0, column=0)
+    original_label.grid(row=1, column=0)
 
     skeleton_label = tk.Label(root)
-    skeleton_label.grid(row=0, column=1)
+    skeleton_label.grid(row=1, column=1)
 
     # Function that iterates over the gif frames to display as a label
     # Runs infinitely
