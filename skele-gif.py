@@ -7,9 +7,7 @@ from skimage import io
 from skimage.color import rgb2gray
 import tkinter as tk
 from tkinter import filedialog
-# import sys
-#
-# arguments = sys.argv
+
 frames = []
 skeleframes = []
 
@@ -40,7 +38,6 @@ def convert_original_to_tk_image(image):
 def convert_new_to_tk_image(image):
     image = Image.fromarray(image.astype(np.uint8)*255)
     return ImageTk.PhotoImage(image)
-
 
 def setSkeleframes():
     for f in frames:
