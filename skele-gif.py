@@ -38,7 +38,7 @@ def convert_new_to_tk_image(image):
     return ImageTk.PhotoImage(image)
 
 
-gif_file = 'zingus-cat.gif'
+gif_file = './gifs-pics/zingus-cat.gif'
 gif_to_array(gif_file)
 
 for f in frames:
