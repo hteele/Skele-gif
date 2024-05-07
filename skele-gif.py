@@ -78,7 +78,7 @@ def display():
     root.resizable(False, False)
 
     # BEGIN EXPERIMENTAL FILE CODE
-    button = tk.Button(root, text="Open GIF File", command=open_file, width=50, height= 2)
+    button = tk.Button(root, text="Open GIF File", command=open_file, width=50, height=2)
     button.pack(side=tk.TOP)
 
     # BELOW IS THE WORKING GIF CODE
@@ -104,12 +104,12 @@ def display():
         else:
             inum = 0
 
-        root.after(70, changeimgonebyone)  # Time delay term
+        root.after(70, changeimgonebyone)  # Time delay term -- Controls framerate of the GIF
 
     # Begin recursive loop
     global inum
     inum = 0
-    root.after(10, changeimgonebyone)  # Time delay term
-    root.mainloop()
-
+    root.after(0, changeimgonebyone)  # Time delay term is technically unnecessary, so 0
+    root.mainloop()  # Call display window
+    
 display()
