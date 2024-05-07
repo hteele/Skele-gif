@@ -57,15 +57,16 @@ for f in frames:
         skeleframes.append(skeletonize(binary_image))
     # --------- END OF INVERSION --------------
 
+# Recursive function with delays to update the output frame
 def show_images():
     root = tk.Tk()
     root.title("Skeleton Project")
 
     original_label = tk.Label(root)
-    original_label.pack()
+    original_label.grid(row=0, column=0)
 
     skeleton_label = tk.Label(root)
-    skeleton_label.pack()
+    skeleton_label.grid(row=0, column=1)
 
     # Function that iterates over the gif frames to display as a label
     # Runs infinitely
