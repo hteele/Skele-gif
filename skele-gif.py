@@ -111,5 +111,5 @@ def display():
     inum = 0
     root.after(0, changeimgonebyone)  # Time delay term is technically unnecessary, so 0
     root.mainloop()  # Call display window
-    
+
 display()
