@@ -6,18 +6,20 @@ from skimage.util import invert
 from skimage import io
 from skimage.color import rgb2gray
 import tkinter as tk
-import sys
-
-arguments = sys.argv
+from tkinter import filedialog
+# import sys
+#
+# arguments = sys.argv
 frames = []
 skeleframes = []
 
 # Convert input gif to array
 def gif_to_array(gif_path):
+
     global frames
-    
     gif = Image.open(gif_path)
     frames.clear()
+    skeleframes.clear()
 
     for frame_index in range(gif.n_frames):
         gif.seek(frame_index)
@@ -40,36 +42,54 @@ def convert_new_to_tk_image(image):
     return ImageTk.PhotoImage(image)
 
 
-# gif_file = './gifs-pics/horserun.gif'
-gif_file = './gifs-pics/' + arguments[1] + '.gif'
-gif_to_array(gif_file)
+def setSkeleframes():
+    for f in frames:
+        image = f
+        if image.ndim == 3:
+            image_gray = rgb2gray(image)
+        else:
+            image_gray = image
 
-for f in frames:
-    image = f
-    if image.ndim == 3:
-        image_gray = rgb2gray(image)
-    else:
-        image_gray = image
-    threshold = 0.5
+        # ---------- INVERSION CONDITION  -----------
+        threshold = 0.5
+        binary_image = image_gray > threshold
+        if binary_image[0, 0] == 1:
+            skeleframes.append(skeletonize(invert(binary_image)))
+        else:
+            skeleframes.append(skeletonize(binary_image))
+        # ------------ END OF INVERSION --------------
 
-    # ---------- INVERSION CONDITION  -----------
-    binary_image = image_gray > threshold
-    if binary_image[0, 0] == 1:
-        skeleframes.append(skeletonize(invert(binary_image)))
-    else:
-        skeleframes.append(skeletonize(binary_image))
-    # --------- END OF INVERSION --------------
+# Open File function
+def open_file():
+    file_path = filedialog.askopenfilename(filetypes=[("GIF files", "*.gif")])
+    if file_path:
+        try:
+            # Attempt to open the file using PIL
+            img = Image.open(file_path)
+            gif_to_array(file_path)
+            setSkeleframes()
+            print("Selected file:", file_path)
+            # Proceed with the file
+        except IOError:
+            # If the file cannot be opened, show an error message
+            print("Error: Not a valid GIF file")
 
-# Recursive function with delays to update the output frame
-def show_images():
+# Recursive display loop with delays to update the output frames at the gif rate
+def display():
     root = tk.Tk()
     root.title("Skeleton Project")
+    root.resizable(False, False)
 
+    # BEGIN EXPERIMENTAL FILE CODE
+    button = tk.Button(root, text="Open GIF File", command=open_file, width=50, height= 2)
+    button.pack(side=tk.TOP)
+
+    # BELOW IS THE WORKING GIF CODE
     original_label = tk.Label(root)
-    original_label.grid(row=1, column=0)
+    original_label.pack(side=tk.LEFT)
 
     skeleton_label = tk.Label(root)
-    skeleton_label.grid(row=1, column=1)
+    skeleton_label.pack(side=tk.LEFT)
 
     # Function that iterates over the gif frames to display as a label
     # Runs infinitely
@@ -87,11 +107,12 @@ def show_images():
         else:
             inum = 0
 
-        root.after(70, changeimgonebyone) # Time delay term
+        root.after(70, changeimgonebyone)  # Time delay term
 
+    # Begin recursive loop
     global inum
     inum = 0
-    root.after(10, changeimgonebyone) # Time delay term
+    root.after(10, changeimgonebyone)  # Time delay term
     root.mainloop()
 
-show_images()
+display()
