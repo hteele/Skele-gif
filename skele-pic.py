@@ -6,9 +6,9 @@ from skimage.color import rgb2gray
 
 # Load your own image
 # image_path = "horsebinary.jpg"
-image_path = "catwhitebackground.png"
+image_path = "./gifs-pics/catwhitebackground.png"
 image = io.imread(image_path)
-
+origin_image = image
 # Convert the image to grayscale if it's not already
 if image.ndim == 3:
     image_gray = rgb2gray(image)
@@ -31,7 +31,8 @@ fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(8, 4), sharex=True, sharey=T
 
 ax = axes.ravel()
 
-ax[0].imshow(inverted_binary_image, cmap=plt.cm.gray)
+# ax[0].imshow(inverted_binary_image, cmap=plt.cm.gray)
+ax[0].imshow(origin_image, cmap=plt.cm.gray)
 ax[0].axis('off')
 ax[0].set_title('original', fontsize=20)
 
