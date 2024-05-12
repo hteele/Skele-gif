@@ -11,9 +11,8 @@ from tkinter import filedialog
 frames = []
 skeleframes = []
 
-# Convert input gif to array
+# Convert input gif to array of images
 def gif_to_array(gif_path):
-
     global frames
     gif = Image.open(gif_path)
     frames.clear()
@@ -29,16 +28,7 @@ def gif_to_array(gif_path):
         frame_array = np.array(frame_jpeg)
         frames.append(frame_array)
 
-# Needed because the images are actually numpy arrays, so we need to change them
-def convert_original_to_tk_image(image):
-    image = Image.fromarray(image.astype(np.uint8))
-    return ImageTk.PhotoImage(image)
-
-# Needed because the images are actually numpy arrays, so we need to change them
-def convert_new_to_tk_image(image):
-    image = Image.fromarray(image.astype(np.uint8)*255)
-    return ImageTk.PhotoImage(image)
-
+# Creates a numpy array of skeletonized image frames from the original
 def setSkeleframes():
     for f in frames:
         image = f
@@ -56,9 +46,19 @@ def setSkeleframes():
             skeleframes.append(skeletonize(binary_image))
         # ------------ END OF INVERSION --------------
 
-# Open File function
+# Convert the RGB image from a numpy array to a 0/255 displayable tkinter image
+def convert_original_to_tk_image(image):
+    image = Image.fromarray(image.astype(np.uint8))
+    return ImageTk.PhotoImage(image)
+
+# Convert the binary image from a numpy array to a 0/255 displayable tkinter image
+def convert_new_to_tk_image(image):
+    image = Image.fromarray(image.astype(np.uint8)*255)
+    return ImageTk.PhotoImage(image)
+
+# Open specifically a *.gif file on button press
 def open_file():
-    file_path = filedialog.askopenfilename(filetypes=[("GIF files", "*.gif")])
+    file_path = filedialog.askopenfilename(filetypes=[("GIF files", "*.gif"), ("PNG files", "*.png"), ("JPEG files", "*.jpeg")])
     if file_path:
         try:
             # Attempt to open the file using PIL
@@ -69,7 +69,7 @@ def open_file():
             # Proceed with the file
         except IOError:
             # If the file cannot be opened, show an error message
-            print("Error: Not a valid GIF file")
+            print("Error: Not a valid file")
 
 # Recursive display loop with delays to update the output frames at the gif rate
 def display():
@@ -77,14 +77,13 @@ def display():
     root.title("Skeleton Project")
     root.resizable(False, False)
 
-    # BEGIN EXPERIMENTAL FILE CODE
-    button = tk.Button(root, text="Open GIF File", command=open_file, width=50, height=2)
+    # BEGIN FILE CODE
+    button = tk.Button(root, text="Open GIF, PNG, or JPEG File", command=open_file, width=50, height=2)
     button.pack(side=tk.TOP)
 
     # BELOW IS THE WORKING GIF CODE
     original_label = tk.Label(root)
     original_label.pack(side=tk.LEFT)
-
     skeleton_label = tk.Label(root)
     skeleton_label.pack(side=tk.LEFT)
 
