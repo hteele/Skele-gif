@@ -58,7 +58,7 @@ def convert_new_to_tk_image(image):
 
 # Open specifically a *.gif file on button press
 def open_file():
-    file_path = filedialog.askopenfilename(filetypes=[("GIF files", "*.gif")])
+    file_path = filedialog.askopenfilename(filetypes=[("GIF files", "*.gif"), ("PNG files", "*.png"), ("JPEG files", "*.jpeg")])
     if file_path:
         try:
             # Attempt to open the file using PIL
@@ -69,7 +69,7 @@ def open_file():
             # Proceed with the file
         except IOError:
             # If the file cannot be opened, show an error message
-            print("Error: Not a valid GIF file")
+            print("Error: Not a valid file")
 
 # Recursive display loop with delays to update the output frames at the gif rate
 def display():
@@ -78,7 +78,7 @@ def display():
     root.resizable(False, False)
 
     # BEGIN FILE CODE
-    button = tk.Button(root, text="Open GIF File", command=open_file, width=50, height=2)
+    button = tk.Button(root, text="Open GIF, PNG, or JPEG File", command=open_file, width=50, height=2)
     button.pack(side=tk.TOP)
 
     # BELOW IS THE WORKING GIF CODE
