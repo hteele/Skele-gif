@@ -77,14 +77,13 @@ def display():
     root.title("Skeleton Project")
     root.resizable(False, False)
 
-    # BEGIN EXPERIMENTAL FILE CODE
+    # BEGIN FILE CODE
     button = tk.Button(root, text="Open GIF File", command=open_file, width=50, height=2)
     button.pack(side=tk.TOP)
 
     # BELOW IS THE WORKING GIF CODE
     original_label = tk.Label(root)
     original_label.pack(side=tk.LEFT)
-
     skeleton_label = tk.Label(root)
     skeleton_label.pack(side=tk.LEFT)
 
