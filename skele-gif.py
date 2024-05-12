@@ -11,9 +11,8 @@ from tkinter import filedialog
 frames = []
 skeleframes = []
 
-# Convert input gif to array
+# Convert input gif to array of images
 def gif_to_array(gif_path):
-
     global frames
     gif = Image.open(gif_path)
     frames.clear()
@@ -29,16 +28,7 @@ def gif_to_array(gif_path):
         frame_array = np.array(frame_jpeg)
         frames.append(frame_array)
 
-# Needed because the images are actually numpy arrays, so we need to change them
-def convert_original_to_tk_image(image):
-    image = Image.fromarray(image.astype(np.uint8))
-    return ImageTk.PhotoImage(image)
-
-# Needed because the images are actually numpy arrays, so we need to change them
-def convert_new_to_tk_image(image):
-    image = Image.fromarray(image.astype(np.uint8)*255)
-    return ImageTk.PhotoImage(image)
-
+# Creates a numpy array of skeletonized image frames from the original
 def setSkeleframes():
     for f in frames:
         image = f
@@ -56,7 +46,17 @@ def setSkeleframes():
             skeleframes.append(skeletonize(binary_image))
         # ------------ END OF INVERSION --------------
 
-# Open File function
+# Convert the RGB image from a numpy array to a 0/255 displayable tkinter image
+def convert_original_to_tk_image(image):
+    image = Image.fromarray(image.astype(np.uint8))
+    return ImageTk.PhotoImage(image)
+
+# Convert the binary image from a numpy array to a 0/255 displayable tkinter image
+def convert_new_to_tk_image(image):
+    image = Image.fromarray(image.astype(np.uint8)*255)
+    return ImageTk.PhotoImage(image)
+
+# Open specifically a *.gif file on button press
 def open_file():
     file_path = filedialog.askopenfilename(filetypes=[("GIF files", "*.gif")])
     if file_path:
